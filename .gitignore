@@ -63,3 +63,15 @@ typings/
 # Config
 **/*config.js
 config/
+
+# Youtube_link
+./youtub_*
+./youtub_link.json
+
+#creator_channelId
+
+
+#crawlfinal.py
+crawlFinal.py
+*.txt
+
