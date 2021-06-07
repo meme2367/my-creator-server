@@ -20,36 +20,24 @@ router.get('/video/crawl', async(req, res) => {
 
     let resultData;
     try {
-
         let getPostByHotQuery= `SELECT channel_id FROM crecre.creator ORDER BY youtube_subscriber_cnt DESC`;  
-
-    const getPostByHotResult = await db.queryParam_None(getPostByHotQuery);
-
-
-
+        const getPostByHotResult = await db.queryParam_None(getPostByHotQuery);
+        
     if (!getPostByHotResult) {
         console.log("popular webtoon file save error");
     } else {
-
-
         const ans = JSON.parse(JSON.stringify(getPostByHotResult[0]));
         const ansss = [];
 
         for(var i = 0;i<ans.length;i++){
             ansss[i] = ans[i].channel_id;
-
         }
-
-
         try {
             fs.writeFileSync('channelCsv.csv', JSON.stringify(ansss), 'UTF-8');
         } catch (resultError) {
             console.log(resultError);
         }
     }
-
-
-
         resultData = JSON.parse(fs.readFileSync('channelCsv.csv', 'UTF-8'));
      
         res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.POST_SELECT_SUCCESS,resultData));
@@ -97,16 +85,9 @@ router.post('/video/crawlHotinput', async(req, res) => {
                     console.log(err);
                 });
             }
-
         }
-
-        
         }
-
-
 });
-
-
 
 
 router.post('/video/crawlNewinput', async(req, res) => {
