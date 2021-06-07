@@ -13,22 +13,14 @@ const authUtil = require('../../../module/utils/authUtils');
 const jwtUtil = require('../../../module/utils/jwt');
 
 
-
-
-// 댓글 작성 OKDK
-
 router.post('/', authUtil.isLoggedin, async(req, res) => {
     const {postIdx,comments,is_anonymous} = req.body;
     const userIdx = req.decoded.user_idx;
     const createTime = moment().format("YYYY-MM-DD HH:mm");
-
-
-    //게시글 있는지
+	
     const getPostQuery = "SELECT * FROM post WHERE idx = ?";
     const getPostResult = await db.queryParam_Parse(getPostQuery, [postIdx]);
 
-    //console.log(getPostResult[0]);
-    console.log(req.decoded.user_idx);
 
      if(!getPostResult){
             res.status(200).send(defaultRes.successFalse(statusCode.BAD_REQUEST, resMessage.POSTS_SELECT_NOTHING + `: ${postIdx}`));
@@ -48,8 +40,6 @@ router.post('/', authUtil.isLoggedin, async(req, res) => {
         
 });
 
-// 댓글 조회성공 okdk
-//유저명 시간 내용
 router.get('/:postIdx', async(req, res) => {
     const {postIdx} = req.params;
     
@@ -65,15 +55,12 @@ router.get('/:postIdx', async(req, res) => {
     }
 });
 
-// 댓글 수정 okdk
 router.put('/:replyIdx', authUtil.isCommentWriter,  (req, res) => {
     
     const {replyIdx} = req.params;
     const {content} = req.body;
     const userIdx = req.decoded.user_idx;
-    // commentIdx가 없거나 userIdx, req.file 전부 없으면 에러 응답
 
-    console.log(replyIdx,content,userIdx);
     if(!replyIdx || !content){
         res.status(200).send(defaultRes.successFalse(statusCode.BAD_REQUEST, resMessage.OUT_OF_VALUE));
     }
@@ -93,12 +80,9 @@ router.put('/:replyIdx', authUtil.isCommentWriter,  (req, res) => {
     });
 });
 
-// 댓글 삭제 okdk
+
 router.delete('/:replyIdx', authUtil.isCommentWriter,  async(req, res) => {
     const {replyIdx} = req.params;
-
-
-    
     const deleteCommentQuery = "DELETE FROM reply WHERE idx = ?";
     const deleteCommentResult = await db.queryParam_Parse(deleteCommentQuery, [replyIdx]);
 
